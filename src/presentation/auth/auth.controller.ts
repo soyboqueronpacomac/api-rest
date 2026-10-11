@@ -14,6 +14,11 @@ export class AuthController {
   ) {
 
   }
+
+  private handleError = (error: unknown, res: Response) => {
+    const customError = error instanceof CustomError ? error : CustomError.internalServerError();
+    return res.status(customError.statusCode).json({ Error: customError });
+  }
   public registerUser = async (req: Request, res: Response) => {
     // Handle user registration logic here
     // registre DTO (Data Transfer Object)
@@ -29,9 +34,8 @@ export class AuthController {
     try {
       const user = await this.repository.register(userCreatedDto!);
       return res.status(201).json({ user });
-    } catch (error: any) {
-      const internalError = CustomError.internalServerError(error);
-      return res.status(internalError.statusCode).json({ Error: internalError });
+    } catch (error: unknown) {
+      return this.handleError(error, res);
     }
   }
   public loginUser = (req: Request, res: Response) => {
