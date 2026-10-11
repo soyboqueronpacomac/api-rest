@@ -5,4 +5,5 @@ export const envsAdapter = {
   CORS_ORIGIN: env.get('CORS_ORIGIN').required().asArray(','),
   MONGO_URL: env.get('MONGO_URL').required().asString(),
   MONGO_DB_NAME: env.get('MONGO_DB_NAME').required().asString(),
+  JWT_SEED: env.get('JWT_SEED').required().asString(),
 }
